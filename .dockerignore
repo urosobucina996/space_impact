@@ -1,0 +1,9 @@
+# Exclude Dockerfile
+Dockerfile
+docker-compose.yml
+
+# Exclude the dist folder
+dist/
+
+# Exclude the node_modules directory
+node_modules/
