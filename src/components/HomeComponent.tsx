@@ -3,7 +3,7 @@ import React from 'react';
 import GameComponent from './GameComponent';
 
 const sizes = {
-  width: 1150,
+  width: 1140,
   height: 600
 };
 
@@ -62,7 +62,7 @@ class GameScene extends Phaser.Scene
         update(){
           const {up, down} = this.cursor;
 
-          this.background.tilePositionX += 0.8;
+          this.background.tilePositionX += 1;
 
           // this.target.setVelocityX(-this.playerSpeed);
           this.enemyMove(this.target, this.playerSpeed);
