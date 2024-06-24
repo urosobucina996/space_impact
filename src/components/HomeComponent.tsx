@@ -21,10 +21,12 @@ class GameScene extends Phaser.Scene
         preload ()
         {
             this.load.image("background", "/images/background.png");
-            this.load.image('ship', '/images/ship.png');
-            this.load.image('target', '/images/monster_lvl1.png');
-            this.load.image('target2', '/images/monster_lvl2.png');
-            this.load.image('target3', '/images/monster_lvl3.png');
+            this.load.spritesheet('ship', '/images/ship.png', { frameWidth:64, frameHeight:64});
+            this.load.spritesheet('target', '/images/monster_lvl1.png', { frameWidth:64, frameHeight:80});
+            this.load.spritesheet('target2', '/images/monster_lvl2.png', { frameWidth:64, frameHeight:80});
+            this.load.spritesheet('target3', '/images/monster_lvl3.png', { frameWidth:64, frameHeight:64});
+
+            console.log(import.meta.env.VITE_APP_DEBUG);
         }
 
         create ()
@@ -43,13 +45,17 @@ class GameScene extends Phaser.Scene
             this.target = this.physics.add.image(950, 300, 'target').setOrigin(0, 0);
             this.target.body.allowGravity = false;
 
-            this.target2 = this.physics.add.image(950, 100, 'target2').setOrigin(0, 0);
+            this.target2 = this.physics.add.image(450, 100, 'target2').setOrigin(0, 0);
             this.target2.body.allowGravity = false;
 
             this.cursor = this.input.keyboard?.createCursorKeys();
 
-            this.physics.add.collider(this.player, this.target);
-            this.physics.add.collider(this.player, this.target2);
+            this.physics.add.collider(this.player, this.target, function(player, target){
+                player.destroy();
+            });
+            this.physics.add.collider(this.player, this.target2, function(player, target){
+              player.destroy();
+            });
             
 
             // const logo = this.physics.add.image(400, 100, 'logo');
@@ -107,7 +113,7 @@ function HomeComponent() {
         default: 'arcade',
         arcade: {
             gravity: { y: speedDown },
-            debug: true
+            debug: import.meta.env.VITE_APP_DEBUG,
         }
     }
   };

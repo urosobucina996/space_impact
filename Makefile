@@ -1,7 +1,7 @@
 IMAGE_NAME := react-docker-app_web
 IMAGE_TAG := latest
 CONTAINER_NAME := game
-#ENV_FILE_NAME := file hidden in root of system, and path is in .bashrc
+ENV_FILE_NAME := SPACE_ENV
 PORT_NO := 8080
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
