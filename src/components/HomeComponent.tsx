@@ -26,7 +26,6 @@ class GameScene extends Phaser.Scene
             this.load.spritesheet('target2', '/images/monster_lvl2.png', { frameWidth:64, frameHeight:80});
             this.load.spritesheet('target3', '/images/monster_lvl3.png', { frameWidth:64, frameHeight:64});
 
-            console.log(import.meta.env.VITE_APP_DEBUG);
         }
 
         create ()
