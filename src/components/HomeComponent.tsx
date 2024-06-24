@@ -9,13 +9,16 @@ const sizes = {
 
 const speedDown = 200;
 
+let lifes = 2;
+let isGameOver = false;
+
 class GameScene extends Phaser.Scene
     {
         constructor() {
           super("scene-game");
-          this.player
-          this.target
-          this.cursor
+          this.player;
+          this.target;
+          this.cursor;
           this.playerSpeed=speedDown+50;
         }
         preload ()
@@ -42,18 +45,23 @@ class GameScene extends Phaser.Scene
 
             /////// Target physics
             this.target = this.physics.add.image(950, 300, 'target').setOrigin(0, 0);
+            this.target.setImmovable(true);
             this.target.body.allowGravity = false;
 
             this.target2 = this.physics.add.image(450, 100, 'target2').setOrigin(0, 0);
+            this.target2.setImmovable(true);
             this.target2.body.allowGravity = false;
 
             this.cursor = this.input.keyboard?.createCursorKeys();
 
-            this.physics.add.collider(this.player, this.target, function(player, target){
+            this.physics.add.collider(this.player, [this.target, this.target2], function(player, target){
+              lifes -= 1;
+              if(lifes == 0){
                 player.destroy();
-            });
-            this.physics.add.collider(this.player, this.target2, function(player, target){
-              player.destroy();
+                isGameOver = true;
+              }
+              console.log('Is game over', isGameOver);
+              console.log('Lifes', lifes);
             });
             
 
@@ -96,9 +104,13 @@ class GameScene extends Phaser.Scene
           enemy.y = Phaser.Math.Between(0, sizes.height);
         }
 
-        randomSpeedNumber(max){
-          return Phaser.Math.Between(0, max)
-        }
+        // randomPositionYAxis(max){
+        //   return Phaser.Math.Between(min, max)
+        // }
+        
+        // randomPositionXAxis(max){
+        //   return Phaser.Math.Between(0, max)
+        // }
     }
 
 function HomeComponent() {
@@ -112,7 +124,8 @@ function HomeComponent() {
         default: 'arcade',
         arcade: {
             gravity: { y: speedDown },
-            debug: import.meta.env.VITE_APP_DEBUG,
+            //debug: import.meta.env.VITE_APP_DEBUG,
+            debug: true,
         }
     }
   };
