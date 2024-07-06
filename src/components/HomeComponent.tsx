@@ -28,13 +28,18 @@ class GameScene extends Phaser.Scene
             this.load.spritesheet('target', '/images/monster_lvl1.png', { frameWidth:64, frameHeight:80});
             this.load.spritesheet('target2', '/images/monster_lvl2.png', { frameWidth:64, frameHeight:80});
             this.load.spritesheet('target3', '/images/monster_lvl3.png', { frameWidth:64, frameHeight:64});
-
+            this.load.image('life', '/images/red-potion.png', { frameWidth:32, frameHeight:32});
         }
 
         create ()
         {
             // this.add.image(400, 300, "background")
             this.background = this.add.tileSprite(570, 300, sizes.width, sizes.height, 'background');
+
+            for (let i = 0; i < lifes; i++) {
+              let postion = lifes == 1 ? 100 : 100+(40*i);
+              this.add.tileSprite(postion, 40, 32, 32, 'life');
+            }
 
             /////// Ship physics
             this.player = this.physics.add.image(50, 300, 'ship').setOrigin(0, 0);
@@ -56,32 +61,22 @@ class GameScene extends Phaser.Scene
 
             this.physics.add.collider(this.player, [this.target, this.target2], function(player, target){
               lifes -= 1;
-              if(lifes == 0){
-                player.destroy();
-                isGameOver = true;
-              }
+              player.destroy();
+              if(lifes == 0) isGameOver = true;
               console.log('Is game over', isGameOver);
               console.log('Lifes', lifes);
+              console.log('target', target);
             });
-            
-
-            // const logo = this.physics.add.image(400, 100, 'logo');
-
-            // logo.setVelocity(100, 200);
-            // logo.setBounce(1, 1);  
-            // logo.setCollideWorldBounds(true);
+            let allSprites = this.children.list.filter(x => x instanceof Phaser.GameObjects.TileSprite);
+            console.log(allSprites);
         }
 
         update(){
           const {up, down} = this.cursor;
 
           this.background.tilePositionX += 1;
-
-          // this.target.setVelocityX(-this.playerSpeed);
           this.enemyMove(this.target, this.playerSpeed);
           this.enemyMove(this.target2, this.playerSpeed);
-
-          // Logic for colition
 
           if(up.isDown){
             this.player.setVelocityY(-this.playerSpeed);
@@ -90,6 +85,7 @@ class GameScene extends Phaser.Scene
           } else {
             this.player.setVelocityY(0);
           }
+  
         }
 
         enemyMove(enemy, speed){
